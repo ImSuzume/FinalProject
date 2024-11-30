@@ -178,70 +178,84 @@ public class BankingSystem extends JFrame {
     }
 
     // Create Account Panel
-    class CreateAccountPanel extends JPanel {
-        private final BankingSystem parent;
+class CreateAccountPanel extends JPanel {
+    private final BankingSystem parent;
 
-        public CreateAccountPanel(BankingSystem parent) {
-            this.parent = parent;
-            setLayout(new GridLayout(8, 2));
+    public CreateAccountPanel(BankingSystem parent) {
+        this.parent = parent;
+        setLayout(new GridLayout(8, 2));
 
-            JTextField fNameField = new JTextField();
-            JTextField addressField = new JTextField();
-            JTextField bdayField = new JTextField();
-            JTextField genderField = new JTextField();
-            JComboBox<String> accTypeComboBox = new JComboBox<>(new String[]{"Savings", "Current"});
-            JTextField initialDepositField = new JTextField();
-            JTextField pinField = new JTextField();
+        JTextField fNameField = new JTextField();
+        JTextField addressField = new JTextField();
+        JTextField bdayField = new JTextField();
+        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
+        JComboBox<String> accTypeComboBox = new JComboBox<>(new String[]{"Savings", "Current"});
+        JTextField initialDepositField = new JTextField();
+        JTextField pinField = new JTextField();
 
-            add(new JLabel("Full Name:"));
-            add(fNameField);
-            add(new JLabel("Address:"));
-            add(addressField);
-            add(new JLabel("Birthday (DD/MM/YYYY):"));
-            add(bdayField);
-            add(new JLabel("Gender:"));
-            add(genderField);
-            add(new JLabel("Account Type:"));
-            add(accTypeComboBox);
-            add(new JLabel("Initial Deposit:"));
-            add(initialDepositField);
-            add(new JLabel("Pin (6 digits):"));
-            add(pinField);
+        add(new JLabel("Full Name:"));
+        add(fNameField);
+        add(new JLabel("Address:"));
+        add(addressField);
+        add(new JLabel("Birthday (DD/MM/YYYY):"));
+        add(bdayField);
+        add(new JLabel("Gender:"));
+        add(genderComboBox);
+        add(new JLabel("Account Type:"));
+        add(accTypeComboBox);
+        add(new JLabel("Initial Deposit:"));
+        add(initialDepositField);
+        add(new JLabel("Pin (6 digits):"));
+        add(pinField);
 
-            JButton createButton = new JButton("Create Account");
-            add(new JLabel());
-            add(createButton);
+        JButton createButton = new JButton("Create Account");
+        add(new JLabel());
+        add(createButton);
 
-            createButton.addActionListener(e -> {
-                String fName = fNameField.getText();
-                String address = addressField.getText();
-                String birthday = bdayField.getText();
-                String gender = genderField.getText();
-                String accountType = (String) accTypeComboBox.getSelectedItem();
-                double initialDeposit = Double.parseDouble(initialDepositField.getText());
-                String pin = pinField.getText();
+        createButton.addActionListener(e -> {
+            String fName = fNameField.getText().trim();
+            String address = addressField.getText().trim();
+            String birthday = bdayField.getText().trim();
+            String gender = (String) genderComboBox.getSelectedItem();
+            String accountType = (String) accTypeComboBox.getSelectedItem();
+            String pin = pinField.getText().trim();
 
-                if (pin.length() != 6 || !pin.matches("\\d{6}")) {
-                    JOptionPane.showMessageDialog(this, "PIN must be exactly 6 digits!");
-                    return;
-                }
+            double initialDeposit;
+            try {
+                initialDeposit = Double.parseDouble(initialDepositField.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid initial deposit. Please enter a valid number.");
+                return;
+            }
 
-                if (accountType.equals("Savings") && initialDeposit < 5000) {
-                    JOptionPane.showMessageDialog(this, "Minimum deposit for Savings Account is 5000.");
-                    return;
-                } else if (accountType.equals("Current") && initialDeposit < 10000) {
-                    JOptionPane.showMessageDialog(this, "Minimum deposit for Current Account is 10000.");
-                    return;
-                }
+            if (!birthday.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                JOptionPane.showMessageDialog(this, "Birthday must be in the format DD/MM/YYYY.");
+                return;
+            }
 
-                Account account = new Account(fName, address, birthday, gender, accountType, initialDeposit, pin);
-                BankingSystem.addAccount(account);
-                JOptionPane.showMessageDialog(this, "Account created successfully! Account Number: " + account.getAccountNumber());
+            if (pin.length() != 6 || !pin.matches("\\d{6}")) {
+                JOptionPane.showMessageDialog(this, "PIN must be exactly 6 digits.");
+                return;
+            }
 
-                parent.cardLayout.show(parent.cardPanel, "Main Menu");
-            });
-        }
+            if (accountType.equals("Savings") && initialDeposit < 5000) {
+                JOptionPane.showMessageDialog(this, "Minimum deposit for Savings Account is 5000.");
+                return;
+            } else if (accountType.equals("Current") && initialDeposit < 10000) {
+                JOptionPane.showMessageDialog(this, "Minimum deposit for Current Account is 10000.");
+                return;
+            }
+
+            // Proceed to create the account
+            Account account = new Account(fName, address, birthday, gender, accountType, initialDeposit, pin);
+            BankingSystem.addAccount(account);
+            JOptionPane.showMessageDialog(this, "Account created successfully! Account Number: " + account.getAccountNumber());
+
+            parent.cardLayout.show(parent.cardPanel, "Main Menu");
+        });
     }
+}
+
 
     // Balance Inquiry Panel
     class BalanceInquiryPanel extends JPanel {
