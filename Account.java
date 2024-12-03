@@ -96,12 +96,10 @@ public class Account implements Serializable {
         return hashToCheck.equals(this.hashedPin); // Check if the entered PIN's hash matches the stored hash
     }
 
-    // Deposit method
     public void deposit(double amount) {
         this.balance = this.balance.add(BigDecimal.valueOf(amount));
     }
 
-    // Withdraw method
     public boolean withdraw(double amount) {
         BigDecimal withdrawalAmount = BigDecimal.valueOf(amount);
         if (balance.compareTo(withdrawalAmount) >= 0) {

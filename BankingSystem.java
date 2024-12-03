@@ -88,8 +88,6 @@ public class BankingSystem extends JFrame {
         return Base64.getEncoder().encodeToString(hash); // Return the Base64 encoded hash as a String
     }
     
-
-    // Consolidated file loading and saving method
     private void loadOrSaveAccounts(boolean save) {
         try {
             if (save) {
@@ -114,7 +112,6 @@ public class BankingSystem extends JFrame {
         }    
     }
 
-    // Main menu panel setup
     private JPanel createMainMenuPanel() {
         JPanel mainMenuPanel = new JPanel(new GridLayout(4, 2));
         String[] buttons = {"Create Account", "Balance Inquiry", "Deposit", "Withdraw", "Account Information", "Close Account", "Exit"};
@@ -127,7 +124,6 @@ public class BankingSystem extends JFrame {
         return mainMenuPanel;
     }
 
-    // Handle menu selection and switch panels
     private void handleMenuSelection(String selection) {
         switch (selection) {
             case "Create Account":
@@ -177,7 +173,6 @@ public class BankingSystem extends JFrame {
         accounts.remove(account);
     }
 
-    // Create Account Panel
 class CreateAccountPanel extends JPanel {
     private final BankingSystem parent;
 
@@ -191,7 +186,7 @@ class CreateAccountPanel extends JPanel {
         JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
         JComboBox<String> accTypeComboBox = new JComboBox<>(new String[]{"Savings", "Current"});
         JTextField initialDepositField = new JTextField();
-        JTextField pinField = new JTextField();
+        JPasswordField pinField = new JPasswordField();
 
         add(new JLabel("Full Name:"));
         add(fNameField);
@@ -256,8 +251,6 @@ class CreateAccountPanel extends JPanel {
     }
 }
 
-
-    // Balance Inquiry Panel
     class BalanceInquiryPanel extends JPanel {
         private final BankingSystem parent;
 
@@ -296,7 +289,6 @@ class CreateAccountPanel extends JPanel {
         }
     }
 
-    // Deposit Panel
     class DepositPanel extends JPanel {
         private final BankingSystem parent;
 
@@ -334,7 +326,6 @@ class CreateAccountPanel extends JPanel {
         }
     }
 
-    // Withdraw Panel
     class WithdrawPanel extends JPanel {
         private final BankingSystem parent;
 
@@ -382,7 +373,6 @@ class CreateAccountPanel extends JPanel {
         }
     }
 
-    // Account Information Panel
     class AccountInfoPanel extends JPanel {
         private final BankingSystem parent;
 
@@ -428,7 +418,6 @@ class CreateAccountPanel extends JPanel {
         }
     }
 
-    // Close Account Panel
     class CloseAccountPanel extends JPanel {
         private final BankingSystem parent;
 
